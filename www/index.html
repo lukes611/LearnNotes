@@ -3,6 +3,9 @@
 </html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="primarycss.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 		<script src="jquery-1.11.2.min.js"></script>
 		<script src="R2.js"></script>
 		<script src="LPoly.js"></script>
@@ -10,7 +13,9 @@
 		<script src="musictheory.js"></script>
 	</head>
 	<body>
-		<canvas width="586" height="500" id="myc"></canvas>
+        <div class="canvasHolder">
+		  <canvas width="600" height="500" id="myc"></canvas>
+        </div>
 		<div id="controls_container">
 			<div class="btc" >treblecleff<input class="btccb" id="tc" type="checkbox" checked="true" /></div>
 			<div class="btc">basscleff<input class="btccb" id="bc" checked="true" type="checkbox" /></div>
@@ -22,36 +27,70 @@
 			
 			function Game(cb)
 			{
+                //graphics object
 				this.g = new LG();
+                
+                //get the width and height ofthe canvas
 				var wh = {w:document.getElementById('myc').width,h:document.getElementById('myc').height};
+                
+                //initialize as on screen canvas
 				this.g.init_onscreen('myc', wh.w, wh.h);
 				
+                //access the timer display
 				this.timer_div = $('<div id="timer_div">TIME</div>');
+                
+                //add buttons (a,b,c,d,e,f,g)
 				this.buttons = this.add_buttons();
+                
+                //create a new fader
 				this.fx = new lg_fader(this.g);
+                
+                //access start button
 				this.start_button = $('#start_button');
+                
+                //me
 				var me = this;
+                
+                //when the user clicks start: start
 				this.start_button.click(function(){me.start();});
+                
+                //create a new musictheory object
 				this.mt = new MTheory(cb);
+                
+                //index is: 
 				this.index = 0;
+                
+                //score is the score
 				this.score = 0;
+                
+                //arrays for guesses, answers and notes
 				this.guesses = [];
 				this.answers = [];
 				this.notes = [];
+                
+                //some sort of state
 				this.type = 0;
+                
+                //access cleff divs
 				this.tc = $('#tc');
 				this.bc = $('#bc');
+                //controls container is all the start menu options
 				this.controls_container = $('#controls_container');
 			}
 			
+            //switch the home-screen menu on or off
 			Game.prototype.menu_switch = function(on_off)
 			{
 				if(on_off){
+                    //fade in controls
 					this.controls_container.fadeIn(30);
+                    //fade out each button
 					this.buttons.forEach(function(b){b.fadeOut(30);});
+                    //fade out timer
 					this.timer_div.fadeOut(30);
 				}
 				else{
+                    //do the opposite, turn on abcdefg blah
 					this.controls_container.fadeOut(30);
 					this.buttons.forEach(function(b){b.fadeIn(30);});
 					this.timer_div.fadeIn(30);
