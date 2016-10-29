@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+</html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="primarycss.css">
+		<script src="jquery-1.11.2.min.js"></script>
+		<script src="R2.js"></script>
+		<script src="LPoly.js"></script>
+		<script src="LG.js"></script>
+		<script src="musictheory.js"></script>
+	</head>
+	<body>
+		<canvas width="586" height="500" id="myc"></canvas>
+		<div id="controls_container">
+			<div class="btc" >treblecleff<input class="btccb" id="tc" type="checkbox" checked="true" /></div>
+			<div class="btc">basscleff<input class="btccb" id="bc" checked="true" type="checkbox" /></div>
+			<button id="start_button">Start</button>
+		</div>
+		<div id="note_buttons_container" >
+		</div>
+		<script type="text/javascript">
+			
+			function Game(cb)
+			{
+				this.g = new LG();
+				var wh = {w:document.getElementById('myc').width,h:document.getElementById('myc').height};
+				this.g.init_onscreen('myc', wh.w, wh.h);
+				
+				this.timer_div = $('<div id="timer_div">TIME</div>');
+				this.buttons = this.add_buttons();
+				this.fx = new lg_fader(this.g);
+				this.start_button = $('#start_button');
+				var me = this;
+				this.start_button.click(function(){me.start();});
+				this.mt = new MTheory(cb);
+				this.index = 0;
+				this.score = 0;
+				this.guesses = [];
+				this.answers = [];
+				this.notes = [];
+				this.type = 0;
+				this.tc = $('#tc');
+				this.bc = $('#bc');
+				this.controls_container = $('#controls_container');
+			}
+			
+			Game.prototype.menu_switch = function(on_off)
+			{
+				if(on_off){
+					this.controls_container.fadeIn(30);
+					this.buttons.forEach(function(b){b.fadeOut(30);});
+					this.timer_div.fadeOut(30);
+				}
+				else{
+					this.controls_container.fadeOut(30);
+					this.buttons.forEach(function(b){b.fadeIn(30);});
+					this.timer_div.fadeIn(30);
+				}
+			};
+			
+			Game.prototype.add_buttons = function()
+			{
+				var note_buttons_container = $('#note_buttons_container');
+				var l = 'a b c d e f g'.split(/\s/g);
+				var me = this;
+				var rv = [];
+				l.forEach(function(e, i)
+				{
+					(function()
+					{
+						var _e = e;
+						var _me = me;
+						var btn = $('<button class="note_buttons">'+_e+'</button>');
+						btn.click(function()
+						{
+							_me.play(_e);
+						});
+						rv.push(btn);
+						btn.css('display', 'none');
+						note_buttons_container.append(btn);
+					})();
+				});
+				note_buttons_container.append(this.timer_div);
+				this.timer_div.css('display', 'none');
+				return rv;
+			};
+			
+			Game.prototype.start = function()
+			{
+				this.menu_switch(false);
+				
+				this.sub_game_init();
+				this.score = 0;
+				var t = 0;
+				var m = this;
+				var mx = 60;
+				var iv = setInterval(function()
+				{
+					var seconds = (Math.round(t*10)/10);
+					m.timer_div.html('seconds: ' + seconds);
+					t+=0.1;
+					if(seconds >= mx)
+					{
+						m.menu_switch(true);
+						//s, p, c, size
+						var st = 'score: ' + m.score;
+						m.fx.fadeOut(function()
+						{
+							m.g.string(st, new R2(60, 120), 'black', 40);
+						});
+						
+						clearInterval(iv);
+					}
+				}, 100);
+			};
+			
+			Game.prototype.sub_game_init = function()
+			{
+				var m = this;
+				this.fx.fadeOut(function()
+				{
+					if($('#tc').prop('checked') && $('#bc').prop('checked'))
+					{
+						m.type = Math.round(Math.random());
+					}else if($('#bc').prop('checked'))
+					{
+						m.type = 1;
+					}else
+					{
+						m.type = 0;
+					}
+					m.answers = [];
+					m.guesses = [];
+					m.index = 0;
+					m.notes = [];
+					for(var i = 0; i < 7; i++)
+					{
+						var v = Math.floor(Math.random() * 13);
+						m.notes.push(v);
+						m.answers.push(m.mt.note_names(m.type)[v]);
+					}
+					m.update_display();
+				});
+			};
+			
+			Game.prototype.play = function(c)
+			{
+				if(c == this.answers[this.index]) this.score++;
+				this.guesses.push(c == this.answers[this.index]);
+				this.index++;
+				this.update_display();
+				if(this.index < 7)
+					return;
+				else this.sub_game_init();
+			};
+			
+			Game.prototype.update_display = function()
+			{
+				this.g.clear('white');
+				this.mt.notes(this.g, new R2(10, 120), this.type, 60, this.notes, this.guesses);
+			};
+			
+			Game.prototype.draw_start_screen = function()
+			{
+				this.g.clear('white');
+				this.mt.notes(this.g, new R2(10, 120), 0, 60, [0, 1, 2, 8, 3, 7, 11]);
+			};
+			
+			$(document).ready(function()
+			{
+				var g = new Game(function()
+				{
+					g.draw_start_screen();
+				});
+			});	
+		</script>
+	</body>
+</html>

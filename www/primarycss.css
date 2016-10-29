@@ -1,0 +1,77 @@
+html, body
+{
+	padding:0px;
+	margin:0px;
+	posistion:fixed;
+	width:100%;
+	height:100%;
+}
+#myc
+{
+	padding:0px;
+	margin:0px;
+	display:block;
+	width:100%;
+	height:50%;
+}
+#start_button
+{
+	background-color:green;
+	font-family:Ariel;
+	color : white;
+	width : 80%;
+	height: 25%;
+	font-size: 210%;
+	margin-left:10%;
+	margin-top:5%;
+}
+
+#note_buttons_container
+{
+	width:100%;
+	height:50%;
+	
+}
+
+#timer_div
+{
+	width:60%;
+	height:9%;
+	background-color:white;
+	font-family:Ariel;
+	position:absolute;
+	right:10%;
+	top:90%;
+	font-size:250%;
+}
+
+.note_buttons
+{
+	width:20%;
+	height:20%;
+	background-color:white;
+	font-size:200%;
+	margin : 5%;
+}
+
+.btc
+{
+	font-size:300%;
+	text-align : center;
+
+}
+.btccb
+{
+	font-size:400%;
+	-webkit-transform: scale(1.5);
+	transform: scale(2.5);
+	margin-left:10%;
+}
+
+#controls_container
+{
+	width:90%;
+	height:35%;
+	position:fixed;
+	margin-left:5%;
+}
