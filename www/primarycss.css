@@ -81,6 +81,38 @@ CSS for start menu:
     padding-bottom : 2%;
 }
 
+#gameMenuContainer{
+    background-color : aqua;
+    display : inline;
+}
+
+#gameMenuContainer table{
+    width : 100%;
+    
+}
+
+#gameMenuContainer table tr td button{
+    width : 100%;
+    font-size : 300%;
+    background-color : darkblue;
+    color : white;
+    font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    padding-top : 4%;
+    padding-bottom : 4%;
+    border: 2px solid white;
+}
+
+.timerDiv{
+    font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    font-size : 250%;
+    margin-top : 2%;
+    margin-left : 40%;
+}
+
+.timerDiv div{
+       
+}
+
 #note_buttons_container
 {
 	width:100%;
@@ -88,17 +120,6 @@ CSS for start menu:
 	
 }
 
-#timer_div
-{
-	width:60%;
-	height:9%;
-	background-color:white;
-	font-family:Ariel;
-	position:absolute;
-	right:10%;
-	top:90%;
-	font-size:250%;
-}
 
 .note_buttons
 {
@@ -107,20 +128,6 @@ CSS for start menu:
 	background-color:white;
 	font-size:200%;
 	margin : 5%;
-}
-
-.btc
-{
-	font-size:300%;
-	text-align : center;
-
-}
-.btccb
-{
-	font-size:400%;
-	-webkit-transform: scale(1.5);
-	transform: scale(2.5);
-	margin-left:10%;
 }
 
 #controls_container

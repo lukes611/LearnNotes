@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-</html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="primarycss.css">
         <meta charset="utf-8">
@@ -32,24 +31,34 @@
                 
                     
                 </div>
+                
                 <div id="gameMenuContainer">
-                    <div id="note_buttons_container" >
+                    <table>
+                        <tr>
+                            <td><button onclick="Play(this.innerHTML);">a</button></td>
+                            <td><button onclick="Play(this.innerHTML);">b</button></td>
+                            <td><button onclick="Play(this.innerHTML);">c</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onclick="Play(this.innerHTML);">d</button></td>
+                            <td><button onclick="Play(this.innerHTML);">e</button></td>
+                            <td><button onclick="Play(this.innerHTML);">f</button></td>
+                        </tr>
+                        <tr>
+                            <td><button onclick="Play(this.innerHTML);">g</button></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    
+                    <div class="timerDiv">
+                        <div id="stopWatch">time: 0</div>
+                    </div>
                 </div>
                 
             </div>
         </div>
-        <!--
-        
-        -->
-        <!--
-		<div id="controls_container">
-			<div class="btc" >treblecleff<input class="btccb" id="tc" type="checkbox" checked="true" /></div>
-			<div class="btc">basscleff<input class="btccb" id="bc" checked="true" type="checkbox" /></div>
-			<button id="start_button">Start</button>
-		</div>
-		<div id="note_buttons_container" >
-		</div>-->
-		<script type="text/javascript">
+        <script type="text/javascript">
 			
 			function Game(cb)
 			{
@@ -63,10 +72,7 @@
 				this.g.init_onscreen('myc', wh.w, wh.h);
 				
                 //access the timer display
-				this.timer_div = $('<div id="timer_div">TIME</div>');
-                
-                //add buttons (a,b,c,d,e,f,g)
-				this.buttons = this.add_buttons();
+				this.timer_div = $('#stopWatch');
                 
                 //create a new fader
 				this.fx = new lg_fader(this.g);
@@ -101,58 +107,23 @@
 				this.tc = $('#tc');
 				this.bc = $('#bc');
                 //controls container is all the start menu options
-				this.controls_container = $('#controls_container');
+				this.startMenu = $('#startMenuContainer');
+                this.gameMenu = $('#gameMenuContainer');
+                this.menu_switch(true);
 			}
 			
             //switch the home-screen menu on or off
-			Game.prototype.menu_switch = function(on_off)
-			{
-				if(on_off){
-                    //fade in controls
-					this.controls_container.fadeIn(30);
-                    //fade out each button
-					this.buttons.forEach(function(b){b.fadeOut(30);});
-                    //fade out timer
-					this.timer_div.fadeOut(30);
-				}
-				else{
-                    //do the opposite, turn on abcdefg blah
-					this.controls_container.fadeOut(30);
-					this.buttons.forEach(function(b){b.fadeIn(30);});
-					this.timer_div.fadeIn(30);
-				}
-			};
-			
-			Game.prototype.add_buttons = function()
-			{
-				var note_buttons_container = $('#note_buttons_container');
-				var l = 'a b c d e f g'.split(/\s/g);
-				var me = this;
-				var rv = [];
-				l.forEach(function(e, i)
-				{
-					(function()
-					{
-						var _e = e;
-						var _me = me;
-						var btn = $('<button class="note_buttons">'+_e+'</button>');
-						btn.click(function()
-						{
-							_me.play(_e);
-						});
-						rv.push(btn);
-						btn.css('display', 'none');
-						note_buttons_container.append(btn);
-					})();
-				});
-				note_buttons_container.append(this.timer_div);
-				this.timer_div.css('display', 'none');
-				return rv;
-			};
+			Game.prototype.menu_switch = function(startMenuOn){
+                var fade1 = startMenuOn ? 'fadeIn' : 'fadeOut';
+                var fade2 = startMenuOn ? 'fadeOut' : 'fadeIn';
+                this.startMenu[fade1](30);
+                this.gameMenu[fade2](30);
+            };
 			
 			Game.prototype.start = function()
 			{
 				this.menu_switch(false);
+                console.log('hi')
 				
 				this.sub_game_init();
 				this.score = 0;
@@ -162,8 +133,9 @@
 				var iv = setInterval(function()
 				{
 					var seconds = (Math.round(t*10)/10);
-					m.timer_div.html('seconds: ' + seconds);
-					t+=0.1;
+                    
+					m.timer_div.html('time: ' + seconds);
+                    t+=0.1;
 					if(seconds >= mx)
 					{
 						m.menu_switch(true);
@@ -231,13 +203,13 @@
 				this.mt.notes(this.g, new R2(10, 120), 0, 60, [0, 1, 2, 8, 3, 7, 11]);
 			};
 			
-			$(document).ready(function()
-			{
-                if(0)return;
-				var g = new Game(function()
-				{
+			$(document).ready(function(){
+                var g = new Game(function(){
 					g.draw_start_screen();
 				});
+                window.Play = function(key){
+                    g.play(key);
+                };
 			});	
 		</script>
 	</body>
