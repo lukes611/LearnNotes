@@ -1,43 +1,84 @@
 html, body{
 	padding : 0;
     margin : 0;
-    background-color : slategray;
+    background-color : rgb(189,189,189);
 }
 
-.canvasHolder{
+/*the game box contains everything for the game*/
+.GameBox{
+    border : 1px solid black;
     width : 100%;
+    height : 99vh;
 }
 
-canvas
-{
-	height : 45vh;
+/*desktop size screens*/
+@media (min-width : 360px){ /*desktop*/
+    .GameBox{
+        width : 360px;
+        height : 720px;
+        margin-left : 50%;
+        position : relative;
+        left : -180px;
+    }
+}
+
+/*outer part of canvas*/
+.canvasWrapper{
+    width : 100%;
+    height : 45%;
+}
+
+/*canvas itself*/
+canvas{
+	height : 94%;
     width : 96%;
     margin: 2%;
     border : 1px solid black;
 }
 
-@media (min-width : 600px){ /*desktop*/
-    .canvasHolder{
-        
-    }
-    canvas{
-        width : 60%;
-        height : 50%;
-        margin-left : 20%;
-    }
-    
-} 
+/*a section to hold buttons and such*/
+.BottomSection{
+    width : 96%;
+    margin:2%;
+    margin-top : 0%;
+    height : 48%;
+}
 
-#start_button
-{
-	background-color:green;
-	font-family:Ariel;
-	color : white;
-	width : 80%;
-	height: 25%;
-	font-size: 210%;
-	margin-left:10%;
-	margin-top:5%;
+
+/*
+CSS for start menu:
+*/
+
+.cleffOptionContainer{
+    width : 100%;
+    padding-top : 4%;
+    padding-bottom : 4%;
+    display : inline-block;
+    font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+}
+
+.cleffOptionContainer div{
+    font-size : 250%;
+    padding-left : 5%;
+    width : 70%;
+    float : left;
+}
+
+.cleffOptionContainer input{
+    width : 20%;
+    height : 30px;
+}
+
+#start_button{
+    font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+	background-color:rgb(40,40,40);
+	color : rgb(200,200,200);
+    border : 2px solid rgb(200,200,200);
+	width : 90%;
+	font-size: 250%;
+    margin : 5%;
+    padding-top : 2%;
+    padding-bottom : 2%;
 }
 
 #note_buttons_container
