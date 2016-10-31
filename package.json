@@ -1,0 +1,22 @@
+{
+  "name": "learn.notes",
+  "version": "1.0.0",
+  "description": "an app for learning the notes",
+  "main": "quickServer.js",
+  "scripts": {
+    "test": "node quickServer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukes611/LearnNotes.git"
+  },
+  "author": "luke lincoln",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukes611/LearnNotes/issues"
+  },
+  "homepage": "https://github.com/lukes611/LearnNotes#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
