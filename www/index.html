@@ -16,6 +16,7 @@
             <div class="canvasWrapper">
 		      <canvas width="600" height="500" id="myc"></canvas>
             </div>
+            
             <div class="BottomSection">
                 <div id="startMenuContainer">
                     
@@ -32,7 +33,7 @@
                     
                 </div>
                 
-                <div id="gameMenuContainer">
+                <div id="gameMenuContainer" style="display:none;">
                     <table>
                         <tr>
                             <td><button onclick="Play(this.innerHTML);">a</button></td>
@@ -46,22 +47,19 @@
                         </tr>
                         <tr>
                             <td><button onclick="Play(this.innerHTML);">g</button></td>
-                            <td></td>
-                            <td></td>
+                            <td class="resultsOutput" id="timerDiv">time: 45.6</td>
+                            <td class="resultsOutput" id="scoreDiv">score: 0</td>
                         </tr>
                     </table>
                     
-                    <div class="timerDiv">
-                        <div id="stopWatch">time: 0</div>
-                    </div>
                 </div>
                 
             </div>
         </div>
         <script type="text/javascript">
 			
-			function Game(cb)
-			{
+            
+			function Game(cb){
                 //graphics object
 				this.g = new LG();
                 
@@ -72,7 +70,8 @@
 				this.g.init_onscreen('myc', wh.w, wh.h);
 				
                 //access the timer display
-				this.timer_div = $('#stopWatch');
+				this.timer_div = $('#timerDiv');
+                this.score_div = $('#scoreDiv');
                 
                 //create a new fader
 				this.fx = new lg_fader(this.g);
@@ -109,15 +108,15 @@
                 //controls container is all the start menu options
 				this.startMenu = $('#startMenuContainer');
                 this.gameMenu = $('#gameMenuContainer');
-                this.menu_switch(true);
-			}
+                //this.menu_switch(true);
+            }
 			
             //switch the home-screen menu on or off
 			Game.prototype.menu_switch = function(startMenuOn){
                 var fade1 = startMenuOn ? 'fadeIn' : 'fadeOut';
                 var fade2 = startMenuOn ? 'fadeOut' : 'fadeIn';
-                this.startMenu[fade1](30);
-                this.gameMenu[fade2](30);
+                this.startMenu[fade1](20);
+                this.gameMenu[fade2](20);
             };
 			
 			Game.prototype.start = function()
@@ -135,6 +134,7 @@
 					var seconds = (Math.round(t*10)/10);
                     
 					m.timer_div.html('time: ' + seconds);
+                    m.score_div.html('score: ' + m.score);
                     t+=0.1;
 					if(seconds >= mx)
 					{

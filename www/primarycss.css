@@ -2,20 +2,21 @@ html, body{
 	padding : 0;
     margin : 0;
     background-color : rgb(189,189,189);
+    overflow : hidden;
 }
 
 /*the game box contains everything for the game*/
 .GameBox{
     border : 1px solid black;
     width : 100%;
-    height : 99vh;
+    height : 100vh;
 }
 
 /*desktop size screens*/
-@media (min-width : 360px){ /*desktop*/
+@media (min-width : 600px){ /*desktop*/
     .GameBox{
-        width : 360px;
-        height : 720px;
+        width : 50vh;
+        height : 100vh;
         margin-left : 50%;
         position : relative;
         left : -180px;
@@ -41,7 +42,8 @@ canvas{
     width : 96%;
     margin:2%;
     margin-top : 0%;
-    height : 48%;
+    height : 50%;
+    overflow:hidden;
 }
 
 
@@ -49,6 +51,7 @@ canvas{
 CSS for start menu:
 */
 
+/*input to select which cleffs to test*/
 .cleffOptionContainer{
     width : 100%;
     padding-top : 4%;
@@ -57,6 +60,7 @@ CSS for start menu:
     font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
 }
 
+/*the sub div containing the label for cleff input*/
 .cleffOptionContainer div{
     font-size : 250%;
     padding-left : 5%;
@@ -64,11 +68,13 @@ CSS for start menu:
     float : left;
 }
 
+/*the actual checkbox for this*/
 .cleffOptionContainer input{
     width : 20%;
     height : 30px;
 }
 
+/*the start button*/
 #start_button{
     font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
 	background-color:rgb(40,40,40);
@@ -81,20 +87,28 @@ CSS for start menu:
     padding-bottom : 2%;
 }
 
+/*the game input container and sub containers*/
 #gameMenuContainer{
     background-color : aqua;
     display : inline;
 }
 
+/*the talbe in the game menu containing the buttons, timer and score*/
 #gameMenuContainer table{
     width : 100%;
     
 }
 
+/*the table data element for the game menu table*/
+#gameMenuContainer table tr td{
+    width : 32%;
+}
+
+/*the buttons within the game menu container table's table data*/
 #gameMenuContainer table tr td button{
     width : 100%;
     font-size : 300%;
-    background-color : darkblue;
+    background-color : rgb(40,40,40);
     color : white;
     font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     padding-top : 4%;
@@ -102,38 +116,14 @@ CSS for start menu:
     border: 2px solid white;
 }
 
-.timerDiv{
+/*for the score and timer output divs*/
+.resultsOutput{
+    width : 100%;
+    text-align : center;
+    background-color : rgb(40,40,40);
+    color : white;
     font-family : Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    font-size : 250%;
-    margin-top : 2%;
-    margin-left : 40%;
-}
-
-.timerDiv div{
-       
-}
-
-#note_buttons_container
-{
-	width:100%;
-	height:50%;
-	
-}
-
-
-.note_buttons
-{
-	width:20%;
-	height:20%;
-	background-color:white;
-	font-size:200%;
-	margin : 5%;
-}
-
-#controls_container
-{
-	width:90%;
-	height:35%;
-	position:fixed;
-	margin-left:5%;
+    padding-top : 4%;
+    padding-bottom : 4%;
+    border: 2px solid white;
 }
