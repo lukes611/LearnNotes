@@ -1,6 +1,5 @@
 
-function MTheory(cb)
-{
+function MTheory(cb){
 	var me = this;
 	var w = 100;
 	var h = 200;
@@ -12,6 +11,9 @@ function MTheory(cb)
 	});
 	
 }
+
+MTheory.TREBLE_CLEF = 0;
+MTheory.BASS_CLEF = 1;
 
 MTheory.prototype.oval = function(p, rx, ry, stroke_color, fill_color)
 {

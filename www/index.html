@@ -64,12 +64,17 @@
 				this.g = new LG();
                 
                 //get the width and height ofthe canvas
-				var wh = {w:document.getElementById('myc').width,h:document.getElementById('myc').height};
+                this.canvasDiv = document.getElementById('myc');
+                
+				var wh = {
+                    w:  this.canvasDiv.width,
+                    h:  this.canvasDiv.height
+                };
                 
                 //initialize as on screen canvas
 				this.g.init_onscreen('myc', wh.w, wh.h);
 				
-                //access the timer display
+                //access the display divs
 				this.timer_div = $('#timerDiv');
                 this.score_div = $('#scoreDiv');
                 
@@ -79,16 +84,14 @@
                 //access start button
 				this.start_button = $('#start_button');
                 
-                //me
-				var me = this;
+                //number of seconds per game
+				this.gameLengthInSeconds = 3.5;
                 
                 //when the user clicks start: start
-				this.start_button.click(function(){me.start();});
+				this.start_button.click(this.start.bind(this));
                 
-                //create a new musictheory object
-				this.mt = new MTheory(cb);
                 
-                //index is: 
+                //index for answers to queries: 
 				this.index = 0;
                 
                 //score is the score
@@ -99,8 +102,8 @@
 				this.answers = [];
 				this.notes = [];
                 
-                //some sort of state
-				this.type = 0;
+                //type is which cleff
+				this.type = MTheory.TREBLE_CLEF;
                 
                 //access cleff divs
 				this.tc = $('#tc');
@@ -108,47 +111,50 @@
                 //controls container is all the start menu options
 				this.startMenu = $('#startMenuContainer');
                 this.gameMenu = $('#gameMenuContainer');
-                //this.menu_switch(true);
+                
+                //create a new musictheory object
+				this.mt = new MTheory(cb);
             }
 			
             //switch the home-screen menu on or off
-			Game.prototype.menu_switch = function(startMenuOn){
-                var fade1 = startMenuOn ? 'fadeIn' : 'fadeOut';
-                var fade2 = startMenuOn ? 'fadeOut' : 'fadeIn';
-                this.startMenu[fade1](20);
-                this.gameMenu[fade2](20);
+            Game.prototype.toHome = function(){
+                this.startMenu.show();
+                this.gameMenu.hide();
+            };
+            Game.prototype.toGame = function(){
+                this.startMenu.hide();
+                this.gameMenu.show();
             };
 			
-			Game.prototype.start = function()
-			{
-				this.menu_switch(false);
-                console.log('hi')
-				
+			Game.prototype.start = function(){
+                //display game buttons
+				this.toGame();
+                
+                //initialize a sub game
 				this.sub_game_init();
+                
+                //reset the score
 				this.score = 0;
-				var t = 0;
-				var m = this;
-				var mx = 60;
-				var iv = setInterval(function()
-				{
-					var seconds = (Math.round(t*10)/10);
+                var startingTime = new Date();
+				
+				var iv = setInterval((function(){
+					var secondsElapsed = ((new Date()).getTime() - this.startingTime.getTime()) / 1000.0;
+                    var displayedET = (secondsElapsed).toFixed(1);
                     
-					m.timer_div.html('time: ' + seconds);
-                    m.score_div.html('score: ' + m.score);
-                    t+=0.1;
-					if(seconds >= mx)
-					{
-						m.menu_switch(true);
+					this.game.timer_div.html('time: ' + displayedET);
+                    this.game.score_div.html('score: ' + this.game.score);
+                    if(secondsElapsed >= this.game.gameLengthInSeconds){
+						this.game.toHome();
 						//s, p, c, size
-						var st = 'score: ' + m.score;
-						m.fx.fadeOut(function()
-						{
-							m.g.string(st, new R2(60, 120), 'black', 40);
+						var st = 'score: ' + this.game.score;
+                        var g = this.game.g;
+						this.game.fx.fadeOut(function(){
+							g.string(st, new R2(60, 120), 'black', 40);
 						});
 						
 						clearInterval(iv);
 					}
-				}, 100);
+				}).bind({game : this, startingTime : startingTime}), 100);
 			};
 			
 			Game.prototype.sub_game_init = function()
@@ -161,10 +167,10 @@
 						m.type = Math.round(Math.random());
 					}else if($('#bc').prop('checked'))
 					{
-						m.type = 1;
+						m.type = MTheory.BASS_CLEF;
 					}else
 					{
-						m.type = 0;
+						m.type = MTheory.TREBLE_CLEF;
 					}
 					m.answers = [];
 					m.guesses = [];
@@ -197,17 +203,16 @@
 				this.mt.notes(this.g, new R2(10, 120), this.type, 60, this.notes, this.guesses);
 			};
 			
-			Game.prototype.draw_start_screen = function()
-			{
+			Game.prototype.draw_start_screen = function(){
 				this.g.clear('white');
-				this.mt.notes(this.g, new R2(10, 120), 0, 60, [0, 1, 2, 8, 3, 7, 11]);
+				this.mt.notes(this.g, new R2(10, 120), MTheory.TREBLE_CLEF, 60, [0, 1, 2, 8, 3, 7, 11]);
 			};
 			
 			$(document).ready(function(){
-                var g = new Game(function(){
-					g.draw_start_screen();
+                var g = new Game(function(){ //create a new game
+					g.draw_start_screen(); //draw init-screen
 				});
-                window.Play = function(key){
+                window.Play = function(key){ //on play function, call g.play with key
                     g.play(key);
                 };
 			});	
